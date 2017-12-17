@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
@@ -38,11 +39,11 @@ namespace TransactionSample.Repository
 
         public void Update()
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            using (var transaction = _context.Database.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 try
                 {
-                    var update = _context.Database.ExecuteSqlCommand(
+                    _context.Database.ExecuteSqlCommand(
                         @"UPDATE People SET LastName = 'Novak'" +
                         " WHERE FirstName LIKE 'Johny'"
                     );
